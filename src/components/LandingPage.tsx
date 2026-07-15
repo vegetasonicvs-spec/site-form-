@@ -1,5 +1,6 @@
 import { motion, animate, useInView } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { Play } from "lucide-react";
 
 function Hero() {
   const [step, setStep] = useState(0);
@@ -73,10 +74,19 @@ function Hero() {
            </h3>
            
            <div className="flex flex-col sm:flex-row gap-6">
-              <button className="px-10 py-5 bg-white text-black text-sm uppercase tracking-[0.2em] hover:bg-gray-200 transition-colors duration-500">
+              <button 
+                onClick={() => {
+                  const el = document.getElementById('portfolio');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="px-10 py-5 bg-white text-black text-sm uppercase tracking-[0.2em] hover:bg-gray-200 transition-colors duration-500"
+              >
                 Conheça nossos filmes
               </button>
-              <button className="px-10 py-5 bg-transparent border border-white/30 text-white text-sm uppercase tracking-[0.2em] hover:border-white transition-colors duration-500">
+              <button 
+                onClick={() => window.open("https://wa.me/5511959856802", "_blank")}
+                className="px-10 py-5 bg-transparent border border-white/30 text-white text-sm uppercase tracking-[0.2em] hover:border-white transition-colors duration-500"
+              >
                 Solicitar orçamento
               </button>
            </div>
@@ -121,75 +131,81 @@ function Problem() {
 
 const PROJECTS = [
   {
-    id: 1,
+    id: "1210279701",
     name: "O Padrão Formfilmes",
     category: "Bastidores & Captação",
-    description: "Nossa paixão por cinema aplicada ao universo corporativo. Um olhar imersivo sobre o planejamento, os equipamentos e a direção que definem nosso padrão de excelência.",
-    video: "/videos/formfilmes-bastidores.mp4",
+    description: "Nossa paixão por cinema aplicada ao universo corporativo. Um olhar imersivo sobre o planejamento, os equipamentos e a direção.",
     fallbackImage: "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?q=80&w=2056&auto=format&fit=crop"
   },
   {
-    id: 2,
+    id: "1210279702",
     name: "L'AKURA Beauty",
     category: "Institucional Premium",
-    description: "Uma experiência visual que transmite o cuidado, a sofisticação e a transformação em cada detalhe dos bastidores de um salão de beleza de alto padrão.",
-    video: "/videos/lakura-beauty.mp4",
+    description: "Uma experiência visual que transmite o cuidado, a sofisticação e a transformação em cada detalhe dos bastidores de um salão de alto padrão.",
     fallbackImage: "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=2074&auto=format&fit=crop"
   }
 ];
 
 function ProjectCard({ project }: { project: typeof PROJECTS[0] }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [thumbnail, setThumbnail] = useState(project.fallbackImage);
+
+  useEffect(() => {
+    fetch(`https://vimeo.com/api/v2/video/${project.id}.json`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data[0] && data[0].thumbnail_large) {
+          // Replace to get a higher resolution thumbnail if possible
+          setThumbnail(data[0].thumbnail_large.replace('d_640', 'd_1280'));
+        }
+      })
+      .catch(console.error);
+  }, [project.id]);
 
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 60, scale: 0.98 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-150px" }}
-      transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }} // smooth ease out
-      className="group relative block w-full aspect-[4/5] sm:aspect-video lg:aspect-[21/9] overflow-hidden cursor-pointer"
-      onMouseEnter={() => videoRef.current?.play().catch(() => {})}
-      onMouseLeave={() => {
-        if (videoRef.current) {
-          videoRef.current.pause();
-          videoRef.current.currentTime = 0;
-        }
-      }}
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+      className="group flex flex-col gap-6"
     >
-      {/* Image / Video Background */}
-      <div className="absolute inset-0 bg-black overflow-hidden">
-        {project.video ? (
-          <video 
-            ref={videoRef}
-            src={project.video}
-            poster={project.fallbackImage}
-            muted 
-            loop 
-            playsInline
-            className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105 opacity-60 group-hover:opacity-40"
-          />
+      <div 
+        className="relative w-full aspect-video rounded-2xl overflow-hidden bg-[#0a0a0a] shadow-2xl shadow-black/50 transition-all duration-500 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.7)] group-hover:scale-[1.02] cursor-pointer"
+        onClick={() => setIsPlaying(true)}
+      >
+        {!isPlaying ? (
+          <>
+            <img 
+              src={thumbnail} 
+              alt={project.name} 
+              className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500"
+            />
+            {/* 20% dark overlay */}
+            <div className="absolute inset-0 bg-black/20" />
+            
+            {/* Play Button */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 transition-all duration-500 group-hover:scale-110 group-hover:bg-white/20 group-hover:shadow-[0_0_30px_rgba(255,255,255,0.15)]">
+                <Play fill="white" className="w-8 h-8 text-white ml-2 opacity-90" />
+              </div>
+            </div>
+          </>
         ) : (
-          <img 
-            src={project.fallbackImage} 
-            alt={project.name} 
-            className="w-full h-full object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-105 opacity-60 group-hover:opacity-40"
+          <iframe
+            src={`https://player.vimeo.com/video/${project.id}?autoplay=1&title=0&byline=0&portrait=0`}
+            className="absolute inset-0 w-full h-full"
+            frameBorder="0"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
           />
         )}
       </div>
 
-      {/* Gradient Overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-      {/* Overlay Content */}
-      <div className="absolute inset-0 p-8 md:p-16 flex flex-col justify-end">
-        <div className="translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700 ease-out">
-          <p className="text-xs md:text-sm tracking-[0.3em] uppercase text-gray-300 mb-6">{project.category}</p>
-          <h3 className="text-4xl md:text-6xl lg:text-7xl font-light mb-8">{project.name}</h3>
-          <p className="max-w-2xl text-gray-400 font-light text-lg md:text-xl mb-12 leading-relaxed">{project.description}</p>
-          <button className="px-8 py-4 border border-white/30 text-white uppercase tracking-[0.2em] text-sm hover:bg-white hover:text-black transition-colors duration-500">
-            Assistir ao Filme
-          </button>
-        </div>
+      <div className="flex flex-col gap-2 px-2">
+        <p className="text-xs md:text-sm tracking-[0.2em] uppercase text-gray-500">{project.category}</p>
+        <h3 className="text-2xl md:text-3xl font-light text-white">{project.name}</h3>
+        <p className="text-gray-400 font-light text-sm md:text-base line-clamp-2 mt-1">{project.description}</p>
       </div>
     </motion.div>
   );
@@ -197,19 +213,24 @@ function ProjectCard({ project }: { project: typeof PROJECTS[0] }) {
 
 function Portfolio() {
   return (
-    <section className="py-32 md:py-48 px-6 bg-[#030303] relative">
+    <section id="portfolio" className="py-32 md:py-48 px-6 bg-[#030303] relative">
       <div className="max-w-[1400px] mx-auto">
-        <motion.h2 
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="text-4xl md:text-6xl font-light tracking-tight mb-24 md:mb-32"
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="mb-20 md:mb-32 text-center md:text-left max-w-4xl"
         >
-          Nossos Filmes
-        </motion.h2>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tight mb-8">
+            Conheça os nossos filmes
+          </h2>
+          <p className="text-lg md:text-xl text-gray-400 font-light leading-relaxed">
+            Cada filme produzido pela Formfilmes nasce com um propósito: contar histórias, fortalecer marcas e criar conexões que geram resultados.
+          </p>
+        </motion.div>
 
-        <div className="flex flex-col gap-32 md:gap-48">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-x-12 md:gap-y-24">
           {PROJECTS.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
@@ -484,10 +505,16 @@ function Cta() {
           transition={{ duration: 1.2, delay: 0.4, ease: "easeOut" }}
           className="flex flex-col sm:flex-row items-center justify-center gap-6"
         >
-          <button className="w-full sm:w-auto px-12 py-6 bg-white text-black text-sm uppercase tracking-[0.2em] hover:bg-gray-200 transition-colors duration-500">
+          <button 
+            onClick={() => window.open("https://wa.me/5511959856802", "_blank")}
+            className="w-full sm:w-auto px-12 py-6 bg-white text-black text-sm uppercase tracking-[0.2em] hover:bg-gray-200 transition-colors duration-500"
+          >
             Quero transformar minha marca
           </button>
-          <button className="w-full sm:w-auto px-12 py-6 bg-transparent border border-white/30 text-white text-sm uppercase tracking-[0.2em] hover:border-white transition-colors duration-500">
+          <button 
+            onClick={() => window.open("https://wa.me/5511959856802", "_blank")}
+            className="w-full sm:w-auto px-12 py-6 bg-transparent border border-white/30 text-white text-sm uppercase tracking-[0.2em] hover:border-white transition-colors duration-500"
+          >
             Conversar pelo WhatsApp
           </button>
         </motion.div>
@@ -506,9 +533,9 @@ function Footer() {
         </div>
         
         <div className="flex flex-col sm:flex-row gap-8 md:gap-16 text-gray-400 tracking-[0.2em] uppercase text-xs md:text-sm">
-          <a href="#" className="hover:text-white transition-colors duration-300 pb-2 border-b border-transparent hover:border-white/30">Instagram</a>
-          <a href="#" className="hover:text-white transition-colors duration-300 pb-2 border-b border-transparent hover:border-white/30">WhatsApp</a>
-          <a href="#" className="hover:text-white transition-colors duration-300 pb-2 border-b border-transparent hover:border-white/30">E-mail</a>
+          <a href="https://www.instagram.com/formfilmes?igsh=N2p1emtlMmhlcGoz&utm_source=qr" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 pb-2 border-b border-transparent hover:border-white/30">Instagram</a>
+          <a href="https://wa.me/5511959856802" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 pb-2 border-b border-transparent hover:border-white/30">WhatsApp</a>
+          <a href="mailto:contato@formfilmes.com.br" className="hover:text-white transition-colors duration-300 pb-2 border-b border-transparent hover:border-white/30">E-mail</a>
         </div>
       </div>
       <div className="max-w-[1400px] mx-auto mt-24 pt-8 border-t border-white/5 text-gray-600 text-xs tracking-widest uppercase flex flex-col md:flex-row justify-between gap-4">
