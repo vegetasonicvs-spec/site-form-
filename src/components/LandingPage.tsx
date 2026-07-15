@@ -143,6 +143,20 @@ const PROJECTS = [
     category: "Institucional Premium",
     description: "Uma experiência visual que transmite o cuidado, a sofisticação e a transformação em cada detalhe dos bastidores de um salão de alto padrão.",
     fallbackImage: "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=2074&auto=format&fit=crop"
+  },
+  {
+    id: "1210290417",
+    name: "A Essência da Marca",
+    category: "Manifesto",
+    description: "Um mergulho profundo na identidade e nos valores que constroem a confiança no mercado, elevando o status da empresa perante seus clientes.",
+    fallbackImage: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?q=80&w=2071&auto=format&fit=crop"
+  },
+  {
+    id: "1210292858",
+    name: "Além do Produto",
+    category: "Lançamento Premium",
+    description: "Cinematografia voltada para destacar os mínimos detalhes que justificam o alto valor percebido de um produto exclusivo.",
+    fallbackImage: "https://images.unsplash.com/photo-1605371924599-2d0365da1ae0?q=80&w=2070&auto=format&fit=crop"
   }
 ];
 
