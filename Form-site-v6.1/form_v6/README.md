@@ -1,0 +1,29 @@
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
+</div>
+
+# Run and deploy your AI Studio app
+
+This contains everything you need to run your app locally.
+
+View your app in AI Studio: https://ai.studio/apps/e6dc43b4-4065-4f72-abd4-502b011a3cfb
+
+## Run Locally
+
+**Prerequisites:**  Node.js
+
+
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`
+
+
+## V6 — SEO e copy
+- Metadados únicos por landing page (title, description, Open Graph, Twitter e canonical).
+- Schema.org de Service por página.
+- Novas páginas locais para São Paulo e Itapecerica da Serra.
+- Links internos entre páginas estratégicas.
+- Sitemap e robots atualizados.
+- WhatsApp contextual por intenção/página.
