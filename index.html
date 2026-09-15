@@ -1,35 +1,202 @@
 <!doctype html>
 <html lang="pt-BR">
   <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8384JZJL0Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8384JZJL0Q');
-</script>
+    <!-- Google tag (gtag.js) com Consent Mode -->
     <script>
-  document.addEventListener('click', function (event) {
-    const link = event.target.closest('a[href*="wa.me/"]');
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
 
-    if (link) {
-      gtag('event', 'generate_lead', {
-        method: 'whatsapp',
-        link_url: link.href
+      gtag('consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied'
       });
-    }
-  });
-</script>
+
+      const savedConsent = localStorage.getItem('form_cookie_consent');
+
+      if (savedConsent === 'accepted') {
+        gtag('consent', 'update', {
+          analytics_storage: 'granted',
+          ad_storage: 'granted',
+          ad_user_data: 'granted',
+          ad_personalization: 'granted'
+        });
+      }
+
+      gtag('js', new Date());
+      gtag('config', 'G-8384JZJL0Q');
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8384JZJL0Q"></script>
+
+    <script>
+      document.addEventListener('click', function (event) {
+        const link = event.target.closest('a[href*="wa.me/"]');
+
+        if (link) {
+          gtag('event', 'generate_lead', {
+            method: 'whatsapp',
+            link_url: link.href
+          });
+        }
+      });
+    </script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Formfilmes | Audiovisual Estratégico</title>
-<meta name="description" content="Produção audiovisual estratégica para empresas que desejam comunicar mais valor, autoridade e confiança." />
+    <meta
+      name="description"
+      content="Produção audiovisual estratégica para empresas que desejam comunicar mais valor, autoridade e confiança."
+    />
+
+    <style>
+      #form-cookie-banner {
+        position: fixed;
+        left: 24px;
+        right: 24px;
+        bottom: 24px;
+        z-index: 99999;
+        display: none;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 22px 24px;
+        border: 1px solid #333;
+        border-radius: 14px;
+        background: rgba(12, 12, 12, 0.98);
+        color: #fff;
+        font-family: Arial, sans-serif;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      #form-cookie-banner.is-visible {
+        display: flex;
+      }
+
+      .form-cookie-text {
+        max-width: 760px;
+        margin: 0;
+        color: #d8d8d8;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .form-cookie-text strong {
+        color: #fff;
+      }
+
+      .form-cookie-text a {
+        color: #fff;
+        text-decoration: underline;
+      }
+
+      .form-cookie-actions {
+        display: flex;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+
+      .form-cookie-button {
+        padding: 12px 18px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      #form-cookie-reject {
+        border: 1px solid #666;
+        background: transparent;
+        color: #fff;
+      }
+
+      #form-cookie-accept {
+        border: 1px solid #fff;
+        background: #fff;
+        color: #111;
+      }
+
+      @media (max-width: 720px) {
+        #form-cookie-banner {
+          left: 14px;
+          right: 14px;
+          bottom: 14px;
+          align-items: stretch;
+          flex-direction: column;
+          padding: 20px;
+        }
+
+        .form-cookie-actions {
+          width: 100%;
+        }
+
+        .form-cookie-button {
+          flex: 1;
+        }
+      }
+    </style>
   </head>
+
   <body>
     <div id="root"></div>
+
+    <div id="form-cookie-banner" role="dialog" aria-label="Preferências de cookies">
+      <p class="form-cookie-text">
+        <strong>Sua privacidade importa.</strong>
+        Utilizamos cookies de análise para entender o uso do site e melhorar sua experiência.
+        Você pode aceitar ou recusar essa coleta.
+        <a href="/privacidade.html">Política de Privacidade e Cookies</a>.
+      </p>
+
+      <div class="form-cookie-actions">
+        <button id="form-cookie-reject" class="form-cookie-button" type="button">
+          Recusar
+        </button>
+        <button id="form-cookie-accept" class="form-cookie-button" type="button">
+          Aceitar
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const cookieBanner = document.getElementById('form-cookie-banner');
+      const acceptButton = document.getElementById('form-cookie-accept');
+      const rejectButton = document.getElementById('form-cookie-reject');
+      const currentConsent = localStorage.getItem('form_cookie_consent');
+
+      if (!currentConsent) {
+        cookieBanner.classList.add('is-visible');
+      }
+
+      acceptButton.addEventListener('click', function () {
+        gtag('consent', 'update', {
+          analytics_storage: 'granted',
+          ad_storage: 'granted',
+          ad_user_data: 'granted',
+          ad_personalization: 'granted'
+        });
+
+        localStorage.setItem('form_cookie_consent', 'accepted');
+        cookieBanner.classList.remove('is-visible');
+      });
+
+      rejectButton.addEventListener('click', function () {
+        gtag('consent', 'update', {
+          analytics_storage: 'denied',
+          ad_storage: 'denied',
+          ad_user_data: 'denied',
+          ad_personalization: 'denied'
+        });
+
+        localStorage.setItem('form_cookie_consent', 'rejected');
+        cookieBanner.classList.remove('is-visible');
+      });
+    </script>
+
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
