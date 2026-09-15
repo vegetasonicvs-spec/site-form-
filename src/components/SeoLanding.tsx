@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
-const SITE = "https://formfilmes.com.br";
+const SITE = "https://www.produtoraformfilmes.com.br";
 const INSTAGRAM = "https://www.instagram.com/formfilmes";
 
 export type SeoPageData = {
