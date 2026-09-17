@@ -346,8 +346,8 @@ function Footer() {
   return (
     <footer>
       <div className="wrap footer-grid">
-        <div className="footer-brand"><img src="/assets/form-logo.jpg" alt="Form"/><p>Audiovisual estratégico.<br/>São Paulo — Brasil.</p></div>
-        <div className="footer-links"><a href={INSTAGRAM} target="_blank" rel="noreferrer">Instagram <ArrowUpRight size={14}/></a><a href={WHATSAPP} target="_blank" rel="noreferrer">WhatsApp <ArrowUpRight size={14}/></a><a href="mailto:contato@formfilmes.com.br">E-mail <ArrowUpRight size={14}/></a></div>
+        <div className="footer-brand"><img src="/assets/form-logo.jpg" alt="Form"/><p>Audiovisual estratégico.<br/>São Paulo — Brasil.<br/>CNPJ 37.974.993/0001-02</p></div>
+        <div className="footer-links"><a href={INSTAGRAM} target="_blank" rel="noreferrer">Instagram <ArrowUpRight size={14}/></a><a href={WHATSAPP} target="_blank" rel="noreferrer">WhatsApp <ArrowUpRight size={14}/></a><a href="mailto:contato@formfilmes.com.br">E-mail <ArrowUpRight size={14}/></a><a href="/privacidade.html">Privacidade <ArrowUpRight size={14}/></a></div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} Form Filmes</span><a href="#top">Voltar ao topo ↑</a></div>
       </div>
     </footer>
